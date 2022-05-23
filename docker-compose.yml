@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+
+  db-login-service:
+    image: postgres
+    environment:
+      - POSTGRES_DB=login_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=group22
+    ports:
+      - ${POSTGRES_LOGIN_PORT}:5432
+    volumes:
+      - ./database_login:/var/lib/postgresql/data
+
+  db-traveler-service:
+    image: postgres
+    environment:
+      - POSTGRES_DB=traveler_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=group22
+    ports:
+      - ${POSTGRES_TRAVELER_PORT}:5432
+    volumes:
+      - ./database_traveler:/var/lib/postgresql/data

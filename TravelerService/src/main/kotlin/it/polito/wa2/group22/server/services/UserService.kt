@@ -74,7 +74,6 @@ class UserService(
         val userDetails = userDetailsRepository.findByUsername(username)
         val tickets = ticketPurchasedRepository.getAllTicketsByUserDetails(userDetails!!).map{ ticket -> ticket.toDTO() }
         println(tickets.size)
-        if (tickets.isNullOrEmpty()) return UserServiceResponseError("No tickets found")
         return UserServiceResponseValid(tickets = tickets)
     }
 

@@ -6,14 +6,14 @@ data class PaymentReq(
     @JsonProperty("orderId")
     val orderId: Long,
 
-    @JsonProperty("userId")
-    val userId: Long,
+    @JsonProperty("username")
+    val username: String,
 
     @JsonProperty("creditCardNumber")
-    val creditCardNumber: Int,
+    val creditCardNumber: String,
 
     @JsonProperty("cvv")
-    val cvv: Int,
+    val cvv: String,
 
     @JsonProperty("expirationDate")
     val expirationDate: String,

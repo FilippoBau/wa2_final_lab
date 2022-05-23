@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service
 //TODO: completare
 
 @Component
-class JwtUtils(@Value("\${jwt.key}") private val key: String){
+class   JwtUtils(@Value("\${jwt.key}") private val key: String){
 
     private val parser: JwtParser =
         Jwts.parserBuilder().setSigningKey(Base64.encodeBase64String(key.toByteArray())).build()

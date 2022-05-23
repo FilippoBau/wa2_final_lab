@@ -5,8 +5,19 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/FakeBankService" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/FakeBankService" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/LoginService" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-7.4" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/LoginService" />
@@ -14,9 +25,23 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/PaymentService" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-7.4" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/PaymentService" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/TicketCatalogueService" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-7.4" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/TicketCatalogueService" />
@@ -24,9 +49,11 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/TravelerService" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-7.4" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/TravelerService" />

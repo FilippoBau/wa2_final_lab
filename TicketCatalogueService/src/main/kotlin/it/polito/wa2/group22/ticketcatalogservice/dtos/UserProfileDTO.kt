@@ -1,10 +1,10 @@
 package it.polito.wa2.group22.ticketcatalogservice.dtos
 
 data class UserProfileDTO(
-    var userId: Long?,
+    var username: String?,
     val name: String?,
     val role: String?,
     val address: String?,
-    val dateOfBirth: String?,
-    val telephoneNumber: String?,
+    val date_of_birth: String?,
+    val telephone_number: String?,
 )

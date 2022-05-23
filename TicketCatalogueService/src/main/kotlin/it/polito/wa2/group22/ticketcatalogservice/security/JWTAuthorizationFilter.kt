@@ -17,7 +17,7 @@ class JWTAuthorizationFilter(private val jwtParser: JWTUtils) : WebFilter {
         if (token != null && jwtParser.validateJwt(token)) {
             val user = jwtParser.getDetailsJwt(token)
             val authenticatedUser =
-                UsernamePasswordAuthenticationToken(user.userId, null, user.roles)
+                UsernamePasswordAuthenticationToken(user.userName, null, user.roles)
 
             return chain.filter(exchange)
                 .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authenticatedUser))

@@ -14,8 +14,8 @@ data class Order(
 
     val quantity: Int,
 
-    @Column("userid")
-    val userId: Long,
+    @Column("username")
+    val username: String,
 
     @Column("status")
     var status: String,

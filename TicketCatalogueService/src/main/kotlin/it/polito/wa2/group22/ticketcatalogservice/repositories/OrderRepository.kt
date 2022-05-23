@@ -13,10 +13,9 @@ interface OrderRepository : CoroutineCrudRepository<Order, Long> {
     @Query(
         """
        SELECT * 
-       FROM orders o, tickets t, payments p, users u 
-       WHERE o.userid = u.id 
+       FROM orders o, tickets t, users u 
+       WHERE o.username = u.username 
        AND o.ticketid = t.id 
-       AND o.paymentid = p.id
     """
     )
     fun findAllOrders(): Flow<Order>
@@ -24,20 +23,19 @@ interface OrderRepository : CoroutineCrudRepository<Order, Long> {
     @Query(
         """
         SELECT * 
-       FROM orders o, tickets t, payments p, users u 
-       WHERE o.userid = u.id 
+       FROM orders o, tickets t, users u 
+       WHERE o.username = u.username 
        AND o.ticketid = t.id 
-       AND o.paymentid = p.id
-       AND o.id = :id AND o.userid = :userId
+       AND o.id = :id AND o.username = :username
     """
     )
-    suspend fun findOrderById(@Param("id") id: Long, @Param("userId") userId: Long): Order?
+    suspend fun findOrderByUsername(@Param("id") id: Long, @Param("username") username: String): Order?
 
     @Query(
         """
         SELECT * 
        FROM orders o, tickets t, users u 
-       WHERE o.userid = u.id 
+       WHERE o.username = u.username 
        AND o.ticketid = t.id 
        AND o.id = :id
     """
@@ -47,12 +45,11 @@ interface OrderRepository : CoroutineCrudRepository<Order, Long> {
     @Query(
         """
          SELECT *
-         FROM orders o, tickets t, payments p, users u 
-         WHERE o.userid = u.id
+         FROM orders o, tickets t, users u 
+         WHERE o.username = u.username
          AND o.ticketid = t.id 
-         AND o.paymentid = p.id
-         AND o.userid = :userid
+         AND o.username = :username
      """
     )
-    fun findOrdersByUser(@Param("userid") id: Long): Flow<Order>
+    fun findOrdersByUser(@Param("username") username: String): Flow<Order>
 }

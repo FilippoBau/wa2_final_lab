@@ -2,9 +2,20 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="BankServiceMock" target="11" />
+      <module name="BankServiceMock.main" target="11" />
+      <module name="BankServiceMock.test" target="11" />
+      <module name="it.polito.wa2.group22.FakeBankService.main" target="11" />
+      <module name="it.polito.wa2.group22.FakeBankService.test" target="11" />
       <module name="it.polito.wa2.group22.server" target="11" />
       <module name="it.polito.wa2.group22.server.main" target="11" />
       <module name="it.polito.wa2.group22.server.test" target="11" />
+      <module name="server" target="11" />
+      <module name="server.main" target="11" />
+      <module name="server.test" target="11" />
+      <module name="TicketCatalogService" target="11" />
+      <module name="TicketCatalogService.main" target="11" />
+      <module name="TicketCatalogService.test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

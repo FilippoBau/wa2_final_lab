@@ -1,6 +1,6 @@
 package it.polito.wa2.group22.ticketcatalogservice.kafka.serializers
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import  com.fasterxml.jackson.databind.ObjectMapper
 import it.polito.wa2.group22.ticketcatalogservice.entities.PaymentRes
 import org.apache.kafka.common.errors.SerializationException
 import org.apache.kafka.common.serialization.Deserializer
@@ -13,7 +13,6 @@ class PaymentResponseDeserializer : Deserializer<PaymentRes> {
 
     override fun deserialize(topic: String?, data: ByteArray?): PaymentRes? {
         log.info("Deserializing PaymentResponse...")
-
         return objectMapper.readValue(
             String(
                 data ?: throw SerializationException("Error when deserializing byte[] to PaymentResponse"),

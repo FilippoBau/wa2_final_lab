@@ -1,7 +1,6 @@
-version: '3.0'
-
+version: '3'
+  
 services:
-
   db-login-service:
     image: postgres
     environment:
@@ -10,8 +9,6 @@ services:
       - POSTGRES_PASSWORD=group22
     ports:
       - ${POSTGRES_LOGIN_PORT}:5432
-    volumes:
-      - ./database_login:/var/lib/postgresql/data
 
   db-traveler-service:
     image: postgres
@@ -21,5 +18,12 @@ services:
       - POSTGRES_PASSWORD=group22
     ports:
       - ${POSTGRES_TRAVELER_PORT}:5432
-    volumes:
-      - ./database_traveler:/var/lib/postgresql/data
+
+  db-ticket-catalog-service:
+    image: postgres
+    environment:
+      - POSTGRES_DB=ticket_catalog_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=group22
+    ports:
+      - ${POSTGRES_TICKET_CATALOG_PORT}:5432

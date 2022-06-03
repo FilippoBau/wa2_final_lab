@@ -1,15 +1,17 @@
 # Group 22: Reactive - Kafka (Lab 5)
 
+
 1. [Getting Started](#getting-started)
    - [Database credentials and settings](#database-credentials-and-settings)
    - [Services port overview](#services-port-overview)
-2. [Setting up Postgres Databases](#)
+2. [Setting up Postgres Databases](#setting-up-postgres-databases)
    - [TravelerService](#travelerservice)
    - [PaymentService](#paymentservice)
    - [TicketCatalogueService](#ticketcatalogueservice)
 3. [Example Token and Payloads for API Tests](#example-token-and-payloads-for-api-tests)
-   - [ROLE USER TOKEN](#role-user-token)
-   - [ROLE ADMIN TOKEN](#role-admin-token)
+   - [TOKEN [ROLE USER]: user1](#token-role-user-user1)
+   - [TOKEN [ROLE USER]: user2](#token-role-user-user2)
+   - [TOKEN [ROLE ADMIN]: user3](#token-role-admin-user3)
    - [Example Payloads](#example-payloads)
 
 # Getting Started

@@ -5,7 +5,7 @@ import it.polito.wa2.group22.ticketcatalogservice.dtos.UserProfileDTO
 import it.polito.wa2.group22.ticketcatalogservice.entities.Order
 import it.polito.wa2.group22.ticketcatalogservice.entities.Ticket
 import it.polito.wa2.group22.ticketcatalogservice.services.TicketCatalogueService
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -13,12 +13,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
 import java.time.LocalDate
@@ -34,16 +29,16 @@ class TicketCatalogueController(@Value("\${traveler-service-endpoint}") traveler
     lateinit var ticketCatalogueService: TicketCatalogueService
 
     private val principal = ReactiveSecurityContextHolder.getContext()
-        .map { it.authentication.principal as Long }
+        .map { it.authentication.principal as String }
 
     @GetMapping("/admin/orders")
     fun getAllOrders(): Flow<Order> {
         return ticketCatalogueService.getAllOrders()
     }
 
-    @GetMapping("/admin/orders/{userId}")
-    suspend fun getAllUserOrdersAdmin(@PathVariable userId: Long): Flow<Order> {
-        return ticketCatalogueService.getOrdersByUser(  userId)
+    @GetMapping("/admin/orders/{username}")
+    suspend fun getAllUserOrdersAdmin(@PathVariable username: String): Flow<Order> {
+        return ticketCatalogueService.getOrdersByUser(username)
     }
 
     @GetMapping("/tickets")
@@ -62,7 +57,8 @@ class TicketCatalogueController(@Value("\${traveler-service-endpoint}") traveler
         @PathVariable ticketId: Long,
         @RequestBody paymentBuyInfo: BuyTicketPaymentDTO
     ): ResponseEntity<Order> {
-        var userProfileDTO: UserProfileDTO?
+        //val tmp = paymentBuyInfo as BuyTicketPaymentDTO
+        val userProfileDTO: UserProfileDTO?
         try {
             userProfileDTO = webClient
                 .get()
@@ -72,36 +68,39 @@ class TicketCatalogueController(@Value("\${traveler-service-endpoint}") traveler
                 .retrieve()
                 .awaitBody()
         } catch (e: Exception) {
+            println(e.printStackTrace())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
 
-        val userId = principal.awaitSingle()
+        val username = principal.awaitSingle()
 
         val ticket = ticketCatalogueService.getTicketById(ticketId)
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).build()
 
         // Check if the user is eligible
-        val dateOfBirth = LocalDate.parse(userProfileDTO.dateOfBirth, DateTimeFormatter.ISO_DATE)
-        val age = (Period.between(LocalDate.now(), dateOfBirth).toTotalMonths()) / 12
+        val dateOfBirth = LocalDate.parse(userProfileDTO.date_of_birth, DateTimeFormatter.ISO_DATE)
+        val age = (Period.between(dateOfBirth, LocalDate.now()).toTotalMonths()) / 12
         if (
             ((ticket.max_age != null) && (ticket.max_age < age)) || (((ticket.min_age != null) && (ticket.min_age > age)))
         ) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
         }
 
-        val order = ticketCatalogueService.buyTicket(userId, ticketId, paymentBuyInfo)
+        val order = ticketCatalogueService.buyTicket(
+            username, ticketId, paymentBuyInfo
+        )
         return ResponseEntity.status(HttpStatus.OK).body(order)
     }
 
     @GetMapping("/orders")
     suspend fun getAllUserOrders(): Flow<Order> {
-        val userId = principal.awaitSingle()
-        return ticketCatalogueService.getOrdersByUser(userId)
+        val username = principal.awaitSingle()
+        return ticketCatalogueService.getOrdersByUser(username)
     }
 
     @GetMapping("/orders/{orderId}")
     suspend fun getOrderById(@PathVariable orderId: Long): Order? {
-        val userId = principal.awaitSingle()
-        return ticketCatalogueService.getOrderById(orderId, userId)
+        val username = principal.awaitSingle()
+        return ticketCatalogueService.getOrderById(orderId, username)
     }
 }

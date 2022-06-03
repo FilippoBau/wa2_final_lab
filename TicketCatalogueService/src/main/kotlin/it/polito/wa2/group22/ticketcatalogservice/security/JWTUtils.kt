@@ -25,11 +25,9 @@ class JWTUtils(
                 jwtParsed.getValue("roles") as List<String>
             )
 
-            if (user.isNullOrBlank() || roles.isNullOrEmpty() || roles.any { r -> !r.equals("USER") || !r.equals("ADMIN") })
+            if (user.isBlank() || roles.isEmpty() || roles.any { r -> r.equals("USER") || r.equals("ADMIN") })
                 return false
-
             return true
-
         } catch (e: Exception) {
             println(e.message)
             return false
@@ -38,10 +36,9 @@ class JWTUtils(
 
 
     fun getDetailsJwt(authToken: String): UserDetailsDTO {
-        var jwtParsed = parser.parseClaimsJws(authToken)
+        val jwtParsed = parser.parseClaimsJws(authToken)
 
-        val user = jwtParsed.body.getValue("sub").toString().toLong()
-
+        val user = jwtParsed.body.getValue("sub").toString()
         val roles = listStringToListRole(
             jwtParsed.body.getValue("roles") as List<String>
         )

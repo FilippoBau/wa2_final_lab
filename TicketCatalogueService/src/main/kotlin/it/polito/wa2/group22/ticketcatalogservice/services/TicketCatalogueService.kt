@@ -9,6 +9,7 @@ import it.polito.wa2.group22.ticketcatalogservice.repositories.OrderRepository
 import it.polito.wa2.group22.ticketcatalogservice.repositories.TicketRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.slf4j.LoggerFactory
 import org.springframework.messaging.Message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -23,6 +24,9 @@ class TicketCatalogueService(
     @Qualifier("paymentRequestTemplate")
     private val paymentRequestTemplate: KafkaTemplate<String, Any>
 ) {
+
+    private val log = LoggerFactory.getLogger(javaClass)
+
     @Autowired
     lateinit var orderRepository: OrderRepository
 
@@ -44,40 +48,43 @@ class TicketCatalogueService(
         }
     }
 
-    suspend fun getOrderById(orderId: Long, userId: Long): Order? {
-        return orderRepository.findOrderById(orderId, userId)
+    suspend fun getOrderById(orderId: Long, username: String): Order? {
+        return orderRepository.findOrderByUsername(orderId, username)
     }
 
-    fun getOrdersByUser(id: Long): Flow<Order> {
-        return orderRepository.findOrdersByUser(id)
+    fun getOrdersByUser(username: String): Flow<Order> {
+        return orderRepository.findOrdersByUser(username)
     }
 
     suspend fun getTicketById(id: Long): Ticket? {
         return ticketRepository.findTicketById(id)
     }
 
-    suspend fun buyTicket(userId: Long, ticketId: Long, buyTicketPaymentDTO: BuyTicketPaymentDTO) : Order {
+    suspend fun buyTicket(username: String, ticketId: Long, buyTicketPaymentDTO: BuyTicketPaymentDTO) : Order {
 
         val order = orderRepository.save(
             Order(
-                null, ticketId, buyTicketPaymentDTO.amount, userId, "PENDING", null, null
+                null, ticketId, buyTicketPaymentDTO.amount, username, "PENDING", null, null
             )
         )
 
+        log.info("Receiving payment request")
+        log.info("Sending payment message to Kafka {}", buyTicketPaymentDTO)
         val message: Message<PaymentReq> = MessageBuilder
             .withPayload(PaymentReq(
                 order.id!!,
-                userId,
-                buyTicketPaymentDTO.paymentInformations.creditCardNumber,
-                buyTicketPaymentDTO.paymentInformations.cvv,
-                buyTicketPaymentDTO.paymentInformations.expirationDate,
+                username,
+                buyTicketPaymentDTO.creditCardNumber,
+                buyTicketPaymentDTO.cvv,
+                buyTicketPaymentDTO.expirationDate,
                 buyTicketPaymentDTO.amount,
             ))
-            .setHeader(KafkaHeaders.TOPIC, Topics.paymentToTicketCatalogue)
+            //.setHeader(KafkaHeaders.TOPIC, Topics.paymentToTicketCatalogue)
+            .setHeader(KafkaHeaders.TOPIC, Topics.ticketCatalogueToPayment)
             .build()
 
         paymentRequestTemplate.send(message)
-
+        log.info("Message sent with success")
         return order
     }
 }

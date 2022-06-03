@@ -57,7 +57,7 @@ class UserService: UserDetailsService{
         //user.salt = BCrypt.gensalt(10)
         //user.password = BCrypt.hashpw(user.password, user.salt)
         user.password = bCryptPasswordEncoder.encode(user.password)
-        var pass = bCryptPasswordEncoder.encode(user.password)
+        bCryptPasswordEncoder.encode(user.password)
 
 
         // TODO: Chiedere al prof se gestito bene
@@ -183,10 +183,8 @@ class UserService: UserDetailsService{
     }
 
     override fun loadUserByUsername(username: String?): UserDetails {
-        var user = userRepository.findByUsername(username!!)
-        if (user == null) {
-            throw UsernameNotFoundException("User not found in the database")
-        }
+        val user = userRepository.findByUsername(username!!)
+            ?: throw UsernameNotFoundException("User not found in the database")
         println(user.username)
         return UserDetailsDTO(user)
     }

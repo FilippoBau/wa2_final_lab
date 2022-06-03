@@ -16,12 +16,11 @@ class OrderReadingConverter : Converter<Row, Order> {
             (source.get("id") as Int).toLong(),
             (source.get("price") as Double).toFloat(),
             source.get("type") as String,
-            source.get("max_age") as Int,
-            source.get("min_age") as Int
+            source.get("max_age") as Int?,
+            source.get("min_age") as Int?
         )
 
         val user = User(
-            (source.get("id") as Int).toLong(),
             source.get("email") as String,
             source.get("username") as String
         )
@@ -30,7 +29,7 @@ class OrderReadingConverter : Converter<Row, Order> {
             (source.get("id") as Int).toLong(),
             (source.get("ticketid") as Int).toLong(),
             source.get("quantity") as Int,
-            (source.get("userid") as Int).toLong(),
+            source.get("username") as String,
             source.get("status") as String,
             ticket,
             user

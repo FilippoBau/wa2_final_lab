@@ -1,1 +1,1 @@
-rootProject.name = "TicketCatalogService"
+rootProject.name = "TicketCatalogueService"
